@@ -17,7 +17,6 @@ ___INFO___
     "PERSONALIZATION",
     "TAG_MANAGEMENT"
   ],
-  "developerId": "dMDQzYW",
   "brand": {
     "id": "privacypillar",
     "displayName": "PrivacyPillar",
@@ -64,7 +63,7 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
 const injectScript = require('injectScript');
 const queryPermission = require('queryPermission');
-const setDefaultConsentState =require('setDefaultConsentState');
+const setDefaultConsentState = require('setDefaultConsentState');
 const encodeUri = require('encodeUri');
 const updateConsentState = require('updateConsentState');
 const log = require('logToConsole');
@@ -72,12 +71,13 @@ const getCookieValues = require('getCookieValues');
 const JSON = require('JSON');
 const callInWindow = require('callInWindow');
 const gtagSet = require('gtagSet'); 
+const callLater = require('callLater');
 const COOKIE_NAME = 'privacypillar-cookie-consent';
 
+gtagSet('developer_id.dMDQzYW', true);
 
 // Set Default Consent
 setDefaultConsentState({
-
   'functionality_storage': 'denied',
   'personalization_storage': 'denied',
   'analytics_storage': 'denied',
@@ -87,7 +87,6 @@ setDefaultConsentState({
   'ad_personalization': 'denied',
   'wait_for_update': 500
 });
-   
 
 // Update user consent
 const onUpdateConsent = (consent) => {
@@ -98,19 +97,23 @@ const onUpdateConsent = (consent) => {
       'security_storage': 'granted',
       'ad_storage': consent.advertising ? 'granted' : 'denied',
       'ad_user_data': consent.advertising ? 'granted' : 'denied',
-      'ad_personalization': consent.advertising ? 'granted' : 'denied',
+     'ad_personalization': consent.advertising ? 'granted' : 'denied',
      });
 };
 
-// Read existing consent from if it exists
-const consentString = getCookieValues("privacypillar-cookie-consent");
+// Read existing consent if it exists
+const checkExistingCookie =()=>{
+  const consentString = getCookieValues("privacypillar-cookie-consent");
 if (consentString.toString() !== '') {
-        const consent =  JSON.parse(consentString);
-        if (typeof consent !== 'undefined') {
-            const purpose = consent.purpose;
-              onUpdateConsent(purpose);
-      }
+  const consent =  JSON.parse(consentString);
+  if (typeof consent !== 'undefined') {
+    const purpose = consent.purpose;
+    onUpdateConsent(purpose);
+  }
 }
+};
+
+callLater(checkExistingCookie);
 
 
 // Load Banner
@@ -519,7 +522,6 @@ ___WEB_PERMISSIONS___
 ]
 
 
-
 ___TESTS___
 
 scenarios: []
@@ -527,6 +529,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 20/09/2022, 17:01:13
+Created on 09/10/2024, 17:01:13
 
 
