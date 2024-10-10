@@ -1,6 +1,9 @@
 homepage: "https://privacypillar.com/"
 documentation: "https://support.privacypillar.com/help-center/articles/23/25/76/setup-privacypillars-consent-manager-template-using-google-tag-manager"
 versions:
+  - sha: 63549f43a494f0d42dce063be7cf420c2504aa5f
+    changeNotes: Change organisation name in readme file and accept terms and conditions for template
+  - sha: cf0a6dd37b450d0492c818e2d6a8d311abdbf590
+    changeNotes: Add developerId and delay in fetching consent if already given, update organisation name in license and readme file
   - sha: ca5765af7c9c2cdb92fc7082a1170349664087ff
     changeNotes: Initial Version
-    
